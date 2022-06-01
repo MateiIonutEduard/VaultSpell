@@ -3,6 +3,6 @@
 <br>
 # Setup
 ```shell
-> /venv/Scripts/pip install -r require.txt
-> /venv/Scripts/python main.py --help
+pip install -r require.txt
+python main.py --help
 ```
