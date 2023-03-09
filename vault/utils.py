@@ -1,8 +1,12 @@
-import docx
-from vault.translator import *
-from docx.text.paragraph import Paragraph
-from vault.bar import *
+import os
 import time
+
+import docx
+from docx.text.paragraph import Paragraph
+from docx2pdf import convert
+
+from vault.bar import *
+from vault.translator import *
 
 
 class VaultCore:
@@ -28,7 +32,17 @@ class VaultCore:
                 break
 
         if ok:
-            newDoc.save(dest)
+            index = dest.rindex(".")
+
+            if dest[index + 1:] == "docx":
+                newDoc.save(dest)
+            elif dest[index + 1:] == "pdf":
+                newPath = "{}.docx".format(dest[:index])
+                doc.save(newPath)
+
+                convert(newPath, dest)
+                os.remove(newPath)
+
             print("\n Successfully translate document!")
 
     @staticmethod
