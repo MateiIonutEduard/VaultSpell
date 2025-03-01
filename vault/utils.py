@@ -7,11 +7,12 @@ from docx2pdf import convert
 
 from vault.bar import *
 from vault.translator import *
+import VaultConfigFactory as vcf
 
 
 class VaultCore:
     @staticmethod
-    def CreateDocument(src: str, dest: str, langs: list[str]):
+    def CreateDocument(vaultConfig: vcf.VaultConfigFactory, src: str, dest: str, langs: list[str]):
         doc = docx.Document(src)
         paragraphs = doc.paragraphs
         ok = True
@@ -20,14 +21,25 @@ class VaultCore:
         util = GoogleTranslate()
 
         newDoc = docx.Document()
-        showProgress(0, n, prefix='Progress:', suffix='Complete', length=25)
+        config = vaultConfig.vaultConfig
+        waitingTime = float(config.waitingTimeMilis) / 1000
+
+        if config.verbose:
+            print("Start translating Word document...")
+
+        if config.showProgress:
+            showProgress(0, n, prefix='Progress:', suffix='Complete', length=25)
 
         for i, line in enumerate(paragraphs):
             try:
                 VaultCore.WriteParagraph(util, newDoc, paragraphs[i], langs)
-                time.sleep(.05)
-                showProgress(i + 1, n, prefix='Progress:', suffix='Complete', length=25)
-            except AttributeError:
+                time.sleep(waitingTime)
+
+                if config.showProgress:
+                    showProgress(i + 1, n, prefix='Progress:', suffix='Complete', length=25)
+            except AttributeError as e:
+                if config.enableErrorThrowing:
+                    print(f"something bad happens: {e}")
                 ok = False
                 break
 
@@ -43,7 +55,8 @@ class VaultCore:
                 convert(newPath, dest)
                 os.remove(newPath)
 
-            print("\n Successfully translate document!")
+            if config.verbose:
+                print("Successfully translate document!")
 
     @staticmethod
     def GetText(src: str, dest: str):
