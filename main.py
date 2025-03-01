@@ -1,5 +1,6 @@
 import argparse as args
 from vault.utils import VaultCore
+import VaultConfigFactory as vf
 
 
 if __name__ == "__main__":
@@ -14,4 +15,6 @@ if __name__ == "__main__":
 
     dest = args.output
     langs = args.langs
-    VaultCore.CreateDocument(src, dest, langs)
+
+    configFactory = vf.VaultConfigFactory()
+    VaultCore.CreateDocument(configFactory, src, dest, langs)
