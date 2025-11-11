@@ -25,4 +25,4 @@ python main.py --help
 Run the application from the command line (example):
 
 ```bash
-python main.py -i "sourceDocument.docx" -o "destDocument.docx" --langs ["ro", "en"]
+python main.py -i "sourceDocument.docx" -o "destDocument.docx" --langs "ro" "en"
