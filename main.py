@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     if len(langs) != 2:
         print("Error: Please provide exactly two language codes (source and destination)")
-        exit(1)
+        exit(-1)
 
     configFactory = vf.VaultConfigFactory()
     VaultCore.CreateDocument(configFactory, src, dest, langs)
