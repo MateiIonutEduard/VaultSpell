@@ -3,5 +3,5 @@
   "waitingTimeMilis": 1,
   "enableDebugMode": false,
   "enableErrorThrowing": false,
-  "verbose": true
+  "verbose": false
 }
